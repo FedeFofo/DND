@@ -11,27 +11,41 @@ public class PugSaver {
 			System.out.println(dog.toString() + "\n");
 		}
 
-		
+		ArrayList<Dog> pugs = new ArrayList<>();
+
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getBreed().equals("Pug")) {
+				pugs.add(list.get(i));
+				list.remove(i);
+				i--;
+			}
+		}
+
+		for (Dog pug : pugs) {
+			list.add(pug);
+		}
+
+		// old idea (doesn't work):
 
 		// int count = 0;
 
 		// for (Dog dog : list) {
-		// 	if (list.indexOf(dog) >= (list.size() - count)) {
-		// 		break;
-		// 	}
+		// if (list.indexOf(dog) >= (list.size() - count)) {
+		// break;
+		// }
 
-		// 	if (dog.getBreed().equals("Pug")) {
-		// 		Dog temp = dog;
-		// 		int pug = list.indexOf(dog);
-		// 		count++;
+		// if (dog.getBreed().equals("Pug")) {
+		// Dog temp = dog;
+		// int pug = list.indexOf(dog);
+		// count++;
 
-		// 		for (int i = list.size() - 1; i > pug; i--) {
-		// 			if (!(list.get(i).getBreed().equals("Pug"))) {
-		// 				list.set(pug, list.get(i));
-		// 				list.set(i, temp);
-		// 			}
-		// 		}
-		// 	}
+		// for (int i = list.size() - 1; i > pug; i--) {
+		// if (!(list.get(i).getBreed().equals("Pug"))) {
+		// list.set(pug, list.get(i));
+		// list.set(i, temp);
+		// }
+		// }
+		// }
 		// }
 
 		System.out.println("\t // AFTER METHOD RAN:\n");
