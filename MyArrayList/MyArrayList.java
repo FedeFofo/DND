@@ -65,23 +65,56 @@ public class MyArrayList<E> {
 		return contains;
 	}
 
+	public E[] resize(E[] array) {
+		int currentSize = array.length;
+		E[] newArray = (E[]) new Object[currentSize * 2];
+		
+		for (int i = 0; i < array.length; i++) {
+			newArray[i] = array[i];
+		}
+
+		return newArray;
+	}
+
 	/* Insert an object at index */
 	@SuppressWarnings("unchecked")
 	public void add(int index, E obj) {
+		if (objectCount >= internalArray.length) {
+			internalArray = resize(internalArray);
+		}
+
+		for (int i = objectCount; i > index; i--) {
+			internalArray[i] = internalArray[i - 1];
+		}
+
+		internalArray[index] = obj;
+
 		objectCount++;
-		/* ---- YOUR CODE HERE ---- */
 	}
 
 	/* Add an object to the end of the list; returns true */
 	@SuppressWarnings("unchecked")
 	public boolean add(E obj) {
+		if (objectCount >= internalArray.length) {
+			internalArray = resize(internalArray);
+		}
+
+		internalArray[objectCount] = obj;
+
 		objectCount++;
-		/* ---- YOUR CODE HERE ---- */
+
+		return true;
 	}
 
 	/* Remove the object at index and shift. Returns removed object. */
 	public E remove(int index) {
-		/* ---- YOUR CODE HERE ---- */
+		E removed = internalArray[index];
+
+		for (int i = index; i < objectCount; i++) {
+			internalArray[i] = internalArray[i + 1];
+		}
+
+		return removed;
 	}
 
 	/*
@@ -93,7 +126,14 @@ public class MyArrayList<E> {
 	 * if this list changed as a result of the call).
 	 */
 	public boolean remove(E obj) {
-		/* ---- YOUR CODE HERE ---- */
+		for (int i = 0; i < internalArray.length; i++) {
+			if (internalArray[i].equals(obj)) {
+				remove(i);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/*
@@ -104,7 +144,19 @@ public class MyArrayList<E> {
 	 * Elements are separated by a comma and a space.
 	 */
 	public String toString() {
-		/* ---- YOUR CODE HERE ---- */
+		if (isEmpty()) {
+			return "[]";
+		} else if (objectCount == 1) {
+			return "[" + internalArray [0] + "]";
+		} else {
+			String result = "[";
+			for (int i = 0; i < objectCount - 1; i++) {
+				result += "" + internalArray[i] + ", ";
+			}
+			result += "" + internalArray[objectCount - 1] + "]";
+			return result;
+		}
+
 	}
 
 }
