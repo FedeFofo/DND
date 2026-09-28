@@ -58,7 +58,7 @@ public class SinglyLinkedList<E> {
 	// otherwise returns false.
 	public boolean contains(E obj) {
 		for (int i = 0; i < nodeCount; i++) {
-			if (get(i).equals(obj)) {
+			if ((obj == null && get(i) == null) || get(i).equals(obj)) {
 				return true;
 			}
 		}
@@ -71,7 +71,7 @@ public class SinglyLinkedList<E> {
 	public int indexOf(E obj) {
 		ListNode<E> current = head;
 		for (int i = 0; i < nodeCount; i++) {
-			if (current.getValue().equals(obj)) {
+			if ((obj == null && current.getValue() == null) || current.getValue().equals(obj)) {
 				return i;
 			}
 			current = current.getNext();
@@ -101,9 +101,14 @@ public class SinglyLinkedList<E> {
 	public boolean remove(E obj) {
 		ListNode<E> current = head;
 		for (int i = 0; i < nodeCount; i++) {
-			if (current.getValue().equals(obj)) {
-				if (i == 0) {
+			if ((obj == null && current.getValue() == null) || current.getValue().equals(obj)) {
+				if (i == 0 && nodeCount != 1) {
 					this.head = getNode(1);
+					nodeCount--;
+					return true;
+				} else if (i == 0 && nodeCount == 1) {
+					this.head = null;
+					this.tail = null;
 					nodeCount--;
 					return true;
 				} else if (i == nodeCount - 1) {
@@ -135,7 +140,7 @@ public class SinglyLinkedList<E> {
 		return (E) current.getValue();
 	}
 
-	// Returns the i-th node (added by James)
+	// Returns the i-th node (added by James Esser -- myself)
 	public ListNode<E> getNode(int i) {
 		if (i < 0 || i >= nodeCount) {
 			throw new IndexOutOfBoundsException("The index must be within bounds of the list!");
@@ -163,12 +168,16 @@ public class SinglyLinkedList<E> {
 	// Inserts obj to become the i-th element. Increments the size
 	// of the list by one.
 	public void add(int i, E obj) {
-		if (i < 0 || i >= nodeCount) {
+		if (i < 0 || i > nodeCount) {
 			throw new IndexOutOfBoundsException("The index must be within bounds of the list!");
 		}
 
 		ListNode<E> add = new ListNode<E>(obj);
-		if (i == nodeCount) {
+		if (i == 0 && this.isEmpty()) {
+			this.head = add;
+			this.tail = add;
+			nodeCount++;
+		} else if (i == nodeCount) {
 			this.tail.setNext(add);
 			this.tail = add;
 			nodeCount++;
@@ -192,6 +201,24 @@ public class SinglyLinkedList<E> {
 			throw new IndexOutOfBoundsException("The index must be within bounds of the list!");
 		}
 
+		if (i == 0 && nodeCount == 1) {
+			E removedObject = this.head.getValue();
+			this.head = null;
+			this.tail = null;
+			nodeCount--;
+			return removedObject;
+		} else if (i == 0 && nodeCount != 1) {
+			E removedObject = this.head.getValue();
+			this.head = getNode(i + 1);
+			nodeCount--;
+			return removedObject;
+		} else if (i == nodeCount - 1) {
+			E removedObject = this.tail.getValue();
+			getNode(i - 1).setNext(null);
+			this.tail = getNode(i - 1);
+			nodeCount--;
+			return removedObject;
+		}
 		ListNode<E> removed = getNode(i);
 		E removedObject = removed.getValue();
 		getNode(i - 1).setNext(getNode(i + 1));
