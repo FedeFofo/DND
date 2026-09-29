@@ -15,6 +15,6 @@ public class SinglyLinkedListTester {
         list.add("B");
         System.out.println(list.indexOf(null));
         System.out.println(list.contains(null));
-        // System.out.println(list.remove(null));
+        System.out.println(list.remove(null));
     }
 }
